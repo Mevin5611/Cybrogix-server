@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your <%= order.name%> Course Purchase</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        min-height: 400px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333333;
+        text-align: center;
+        padding: 10px 0px;
+      }
+
+      p {
+        color: #555555;
+      }
+
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #777777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Thank You for Purchasing Our Course!</h1>
+      <h3>Hello customerName <%= order.customer%>,</h3>
+
+      <h4>Course ID: <%= order._id%></h4>
+      <h4>Course Name: <%= order.name%></h4>
+
+      <h4>Total price: <%= order.price%></h4>
+      <h4>Date <%= order.date%></h4>
+      
+      
+      <p>
+        We are thrilled to have you on board for our JavaScript course. Get
+        ready to embark on an exciting journey of learning and mastery!
+      </p>
+      <p>
+        If you have any questions or need assistance, feel free to contact us.
+      </p>
+      <p class="footer">Best regards</p>
+    </div>
+  </body>
+</html>
