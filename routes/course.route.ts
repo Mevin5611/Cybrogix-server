@@ -25,7 +25,6 @@ courseRouter.get(
 );
 courseRouter.get(
   "/getAll-courses",
-  updateAccessToken,
   getAllCourses
 );
 courseRouter.get(
