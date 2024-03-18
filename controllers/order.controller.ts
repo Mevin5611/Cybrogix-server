@@ -140,13 +140,25 @@ export const newPayment = CatchAsyncError(
       try {
         const myPayment = await stripe.paymentIntents.create({
             amount:req.body.amount,
-            currency:"INR",
+            currency:"usd",
+            description: "for amazon-clone project",
             metadata:{
                 company:"Cybrogix",
             },
             automatic_payment_methods:{
                 enabled:true,
-            }
+            },
+                shipping: {
+                    name: "mevin",
+                    address: {
+                        line1: "kerala", 
+                        line2: "kannur",
+                        city: "thalassery",
+                        state: "kerala",
+                        postal_code: "670661",
+                        country: "IN",
+                    }
+                }
         })
 
         res.status(200).json({
