@@ -18,7 +18,6 @@ layoutRoute.put(
 );
 layoutRoute.get(
   "/get-layout/:type",
-  isAuthenticated,
   getLayout
 );
 
