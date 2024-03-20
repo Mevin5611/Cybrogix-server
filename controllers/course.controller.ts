@@ -99,9 +99,9 @@ export const getSingleCource = CatchAsyncError(
     try {
       const courseId = req.params.id;
 
-      const isCacheExist = await redis.get(courseId);
+      /* const isCacheExist = await redis.get(courseId); */
 
-      if (isCacheExist) {
+      /* if (isCacheExist) {
         const course = JSON.parse(isCacheExist);
         console.log("hitting redis");
 
@@ -109,7 +109,7 @@ export const getSingleCource = CatchAsyncError(
           success: true,
           course,
         });
-      } else {
+      } else { */
         const course = await CourseModel.findById(req.params.id).select(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
@@ -120,7 +120,7 @@ export const getSingleCource = CatchAsyncError(
           success: true,
           course,
         });
-      }
+      
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
