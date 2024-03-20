@@ -140,7 +140,7 @@ export const newPayment = CatchAsyncError(
       try {
         const myPayment = await stripe.paymentIntents.create({
             amount:req.body.amount,
-            currency:"usd",
+            currency:"INR",
             description: "for amazon-clone project",
             metadata:{
                 company:"Cybrogix",
