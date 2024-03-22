@@ -20,7 +20,6 @@ courseRouter.put(
 );
 courseRouter.get(
   "/getsingle-course/:id",
-  updateAccessToken,
   getSingleCource
 );
 courseRouter.get(
