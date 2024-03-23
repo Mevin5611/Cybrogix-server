@@ -10,9 +10,9 @@ import sendMail from "../utils/sendMail";
 import notificationModel from "../models/notification.model";
 import { getAllOrderServices, newOrder } from "../services/order.service";
 import { redis } from "../utils/redis";
-require("dotenv").config()
+require("dotenv").config();
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // create order
 
@@ -26,20 +26,17 @@ export const createOrder = CatchAsyncError(
       const courseExistInUser = user?.courses.some(
         (course: any) => course._id.toString() === courseId
       );
-        if(payment_info){
-
-            if("id" in payment_info){
-              const paymentIntentId = payment_info.id;
-              const paymentIntent = await stripe.paymentIntents.retrieve(
-                paymentIntentId
-              )
-              if(paymentIntent.status !== "succeeded"){
-               return next(new ErrorHandler("payment not authorized",400))
-              }
-            }
-
-            
+      if (payment_info) {
+        if ("id" in payment_info) {
+          const paymentIntentId = payment_info.id;
+          const paymentIntent = await stripe.paymentIntents.retrieve(
+            paymentIntentId
+          );
+          if (paymentIntent.status !== "succeeded") {
+            return next(new ErrorHandler("payment not authorized", 400));
+          }
         }
+      }
 
       if (courseExistInUser) {
         return next(
@@ -92,7 +89,7 @@ export const createOrder = CatchAsyncError(
 
       user?.courses.push(course?._id);
 
-      await redis.set(req.user?._id,JSON.stringify(user))
+      await redis.set(req.user?._id, JSON.stringify(user));
 
       await user?.save();
 
@@ -127,47 +124,43 @@ export const getAllOrders = CatchAsyncError(
 
 // send stripe publishible key
 
-export const sendStripePublishibleKey = CatchAsyncError(async(req: Request, res: Response)=>{
-res.status(200).json({
-    publishablekey:process.env.STRIPE_PUBLISHABLE_KEY
-})
-})
+export const sendStripePublishibleKey = CatchAsyncError(
+  async (req: Request, res: Response) => {
+    res.status(200).json({
+      publishablekey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+  }
+);
 
 // new payment
 
 export const newPayment = CatchAsyncError(
-    async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const myPayment = await stripe.paymentIntents.create({
-            amount:req.body.amount,
-            currency:"INR",
-            description: "for amazon-clone project",
-            metadata:{
-                company:"Cybrogix",
-            },
-            automatic_payment_methods:{
-                enabled:true,
-            },
-                shipping: {
-                    name: "mevin",
-                    address: {
-                        line1: "kerala", 
-                        line2: "kannur",
-                        city: "thalassery",
-                        state: "kerala",
-                        postal_code: "670661",
-                        country: "IN",
-                    }
-                }
-        })
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const myPayment = await stripe.paymentIntents.create({
+        amount: req.body.amount,
+        description: "Software development services",
+        shipping: {
+          name: "Jenny Rosen",
+          address: {
+            line1: "510 Townsend St",
+            postal_code: "98140",
+            city: "San Francisco",
+            state: "CA",
+            country: "US",
+          },
+        },
 
-        res.status(200).json({
-            success:true,
-            client_secret:myPayment.client_secret
-        })
-       
-      } catch (error: any) {
-        return next(new ErrorHandler(error.message, 500));
-      }
+        currency: "usd",
+        payment_method_types: ["card"],
+      });
+
+      res.status(200).json({
+        success: true,
+        client_secret: myPayment.client_secret,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
     }
-  );
+  }
+);
