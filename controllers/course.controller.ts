@@ -381,11 +381,13 @@ export const addReview = CatchAsyncError(
       await course?.save();
 
       //create notification
-
-      const notification = {
+      await notificationModel.create({
+        user:req.user?._id,
         title: "New review recived",
         message: `${req.user?.name} has given a review in ${course?.name}`,
-      };
+      });
+
+      
 
       res.status(200).json({
         success: true,
@@ -436,6 +438,12 @@ export const addReviewReplay = CatchAsyncError(
       review.commentReplies.push(newReplay);
 
       await course?.save();
+
+      await notificationModel.create({
+        user:req.user?._id,
+        title: "New review replay recived",
+        message: `${req.user?.name} has given a replay in your review in ${course?.name}`,
+      });
 
       res.status(200).json({
         success: true,
