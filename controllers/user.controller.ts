@@ -14,7 +14,11 @@ import {
   sendToken,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getAllUserService, getUserById, updateUserRoleService } from "../services/user.service";
+import {
+  getAllUserService,
+  getUserById,
+  updateUserRoleService,
+} from "../services/user.service";
 import cloudinary from "cloudinary";
 
 //register user
@@ -163,7 +167,6 @@ export const loginUser = CatchAsyncError(
       }
 
       sendToken(user, 200, res);
-      
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
@@ -211,7 +214,9 @@ export const updateAccessToken = CatchAsyncError(
       console.log(session);
 
       if (!session) {
-        return next(new ErrorHandler("Please login to access the resource", 400));
+        return next(
+          new ErrorHandler("Please login to access the resource", 400)
+        );
       }
       const user = JSON.parse(session);
 
@@ -235,9 +240,9 @@ export const updateAccessToken = CatchAsyncError(
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-      await redis.set(user._id,JSON.stringify(user),"EX",604800)
+      await redis.set(user._id, JSON.stringify(user), "EX", 604800);
 
-      next()
+      next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
@@ -295,7 +300,6 @@ export const updateUserInfo = CatchAsyncError(
       const { name } = req.body as IuserInfo;
       const userId = req.user?._id;
       const user = await userModel.findById(userId);
-      
 
       if (name && user) {
         user.name = name;
@@ -412,54 +416,127 @@ export const updateUserProfile = CatchAsyncError(
     }
   }
 );
+// Update user certificates
+
+interface IUpdateProfile {
+  certificates: string;
+  course:string
+  userId:string
+}
+
+export const updateUserCertificates = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { certificates,course,userId } = req.body as IUpdateProfile;
+      
+      console.log(userId);
+
+      const user = await userModel.findById(userId);
+
+      if (certificates && course && user) {
+        if (!user) {
+          return next(new ErrorHandler("user not found", 400));
+        }
+
+        /* if (user?.certificates?.public_id) {
+          await cloudinary.v2.uploader.destroy(user?.certificates?.public_id);
+
+          const myCloud = await cloudinary.v2.uploader.upload(certificates, {
+            folder: "certificate",
+            width: 150,
+          });
+          user.certificates = [{
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          }];
+        } else { */
+
+        let updatedCertificates: any = [];
+
+        // Check if the user already has certificates
+        if (user.certificates && user.certificates.length > 0) {
+          updatedCertificates = [...user.certificates]; // Copy existing certificates
+        }
+
+        if (certificates) {
+          const myCloud = await cloudinary.v2.uploader.upload(certificates, {
+            folder: "certificate",
+            width: 150,
+          });
+
+          updatedCertificates.push({
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+            course,
+          });
+        }
+
+        // Update user's certificates array
+        user.certificates = updatedCertificates;
+      }
+      await user?.save();
+
+      await redis.set(userId, JSON.stringify(user));
+
+      res.status(200).json({
+        success: true,
+        message: "user certificate updated",
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
 
 // get all users -- only for admin
 
-export const getAllUsers = CatchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-  try {
-    getAllUserService(res)
-    
-  } catch (error:any) {
-    return next(new ErrorHandler(error.message,500))
+export const getAllUsers = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllUserService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
   }
-})
+);
 
 // update user role only for admin
 
-export const updateUserRole = CatchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-  try {
-    const {email,role} = req.body
+export const updateUserRole = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, role } = req.body;
 
-    updateUserRoleService(res,email,role)
-  } catch (error:any) {
-    return next(new ErrorHandler(error.message,500))
+      updateUserRoleService(res, email, role);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
   }
-})
+);
 
 // delete user only for admin
 
-export const deleteUser = CatchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-  try {
-    const _id = req.params.id
+export const deleteUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const _id = req.params.id;
 
-    const user = await userModel.findById(_id)
+      const user = await userModel.findById(_id);
 
-    if(!user){
-      return next(new ErrorHandler("user not found",404))
+      if (!user) {
+        return next(new ErrorHandler("user not found", 404));
+      }
+
+      await user.deleteOne({ _id });
+      await redis.del(_id);
+
+      res.status(201).json({
+        success: true,
+        message: "User deleted successfully",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
     }
-
-    await user.deleteOne({_id})
-    await redis.del(_id)
-    
-
-
-    res.status(201).json({
-      success:true,
-      message:"User deleted successfully"
-    })
-    
-
-  } catch (error:any) {
-    return next(new ErrorHandler(error.message,500))
   }
-})
+);
