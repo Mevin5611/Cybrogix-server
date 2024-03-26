@@ -14,6 +14,11 @@ export interface IUser extends Document {
     public_id: string;
     url: string;
   };
+  certificates:[{
+    public_id: string;
+    url: string;
+    course:string
+  }];
   role: string;
   isVerified: boolean;
   courses: Array<{ courseId: string }>;
@@ -48,6 +53,11 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       public_id: String,
       url: String,
     },
+    certificates:[{
+      public_id: String,
+      url: String,
+      course:String,
+    }],
     role: {
       type: String,
       default: "user",
