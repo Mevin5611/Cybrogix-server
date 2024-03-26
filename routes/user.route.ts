@@ -13,6 +13,8 @@ import {
   getAllUsers,
   updateUserRole,
   deleteUser,
+  updateUserCertificates,
+  downloadUserCertificates,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -28,6 +30,7 @@ userRouter.post("/social-auth", socialAuth);
 userRouter.put("/update-info",isAuthenticated, updateUserInfo);
 userRouter.put("/update-password",updateAccessToken,isAuthenticated, updatePassword);
 userRouter.put("/update-profile",updateAccessToken,isAuthenticated, updateUserProfile);
+userRouter.post("/upload-certificate/:id",updateAccessToken,isAuthenticated,authorizeRoles("admin"),updateUserCertificates);
 userRouter.get("/get-all-users",updateAccessToken,isAuthenticated,authorizeRoles("admin"),getAllUsers);
 userRouter.put("/update-user-role",updateAccessToken,isAuthenticated,authorizeRoles("admin"),updateUserRole);
 userRouter.delete("/delete-user/:id",updateAccessToken,isAuthenticated,authorizeRoles("admin"),deleteUser);
