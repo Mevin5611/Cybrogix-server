@@ -34,7 +34,7 @@ interface ICourseData extends Document{
     questions:IComment[];
 }
 
-interface ICourse extends Document{
+export interface ICourse extends Document{
     name:string;
     description?:string;
     categories?:string;
