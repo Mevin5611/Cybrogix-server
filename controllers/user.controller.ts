@@ -461,7 +461,7 @@ export const updateUserCertificates = CatchAsyncError(
         if (certificates) {
           const myCloud = await cloudinary.v2.uploader.upload(certificates, {
             folder: "certificate",
-            width: 150,
+            
           });
 
           updatedCertificates.push({
