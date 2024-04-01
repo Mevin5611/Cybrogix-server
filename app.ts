@@ -11,6 +11,7 @@ import orderRouter from "./routes/order.route";
 import notificationRoute from "./routes/notification.route";
 import analyticsRoute from "./routes/analytics.route";
 import layoutRoute from "./routes/layout.route";
+import { rateLimit } from 'express-rate-limit'
 
 //body parser
 app.use(express.json({ limit: "50mb" }));
@@ -26,6 +27,15 @@ app.use(
     credentials:true,
   })
 );
+
+// api limiter
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, 
+	limit: 100, 
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+
+})
 
 app.use(
   "/api/lms",
@@ -54,4 +64,5 @@ app.use("*", (req: Request, res: Response, next: NextFunction) => {
   next(err);
 });
 
+app.use(limiter)
 app.use(ErrorMiddleware);
