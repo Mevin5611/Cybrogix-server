@@ -13,6 +13,13 @@ import analyticsRoute from "./routes/analytics.route";
 import layoutRoute from "./routes/layout.route";
 import { rateLimit } from 'express-rate-limit'
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://shiftmate-frontend.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 //body parser
 app.use(express.json({ limit: "50mb" }));
 
