@@ -28,7 +28,8 @@ export const accessTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + accessTokenExpires *60*60*1000),
   maxAge: accessTokenExpires *60*60*1000,
   httpOnly: true,
-  sameSite: "lax",
+  sameSite: "none",
+  secure:true
   
 };
 
@@ -36,7 +37,8 @@ export const refreshTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + refreshTokenExpires* 24 * 60 * 60 * 1000),
   maxAge: refreshTokenExpires * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  sameSite: "lax",
+  sameSite: "none",
+  secure:true
   
 };
 
@@ -51,10 +53,7 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
 
   // only set secure to true
 
-  if (process.env.NODE_ENV === "production") {
-    accessTokenOptions.secure = true;
-    
-  }
+
 
   res.cookie('access_token', accessToken,accessTokenOptions)
   res.cookie('refresh_token',refreshToken,refreshTokenOptions)
