@@ -438,18 +438,7 @@ export const updateUserCertificates = CatchAsyncError(
           return next(new ErrorHandler("user not found", 400));
         }
 
-        /* if (user?.certificates?.public_id) {
-          await cloudinary.v2.uploader.destroy(user?.certificates?.public_id);
-
-          const myCloud = await cloudinary.v2.uploader.upload(certificates, {
-            folder: "certificate",
-            width: 150,
-          });
-          user.certificates = [{
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          }];
-        } else { */
+        
 
         let updatedCertificates: any = [];
 

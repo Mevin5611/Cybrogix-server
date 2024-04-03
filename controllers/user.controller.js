@@ -293,18 +293,6 @@ exports.updateUserCertificates = (0, catchAsyncError_1.CatchAsyncError)((req, re
             if (!user) {
                 return next(new ErrorHandler_1.default("user not found", 400));
             }
-            /* if (user?.certificates?.public_id) {
-              await cloudinary.v2.uploader.destroy(user?.certificates?.public_id);
-    
-              const myCloud = await cloudinary.v2.uploader.upload(certificates, {
-                folder: "certificate",
-                width: 150,
-              });
-              user.certificates = [{
-                public_id: myCloud.public_id,
-                url: myCloud.secure_url,
-              }];
-            } else { */
             let updatedCertificates = [];
             // Check if the user already has certificates
             if (user.certificates && user.certificates.length > 0) {
