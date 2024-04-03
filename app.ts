@@ -20,12 +20,10 @@ app.use(express.json({ limit: "50mb" }));
 
 app.use(cookieParser());
 
-
-
 //cors
 app.use(
   cors({
-    origin:['https://cybrogix-client.vercel.app'],
+    origin:['http://localhost:3000'],
     credentials:true,
   })
 );
@@ -40,7 +38,7 @@ const limiter = rateLimit({
 })
 
 app.use(
-  "/",
+  "/api/lms",
   userRouter,
   courseRouter,
   orderRouter,
@@ -51,12 +49,12 @@ app.use(
 
 // testing api
 
-/* app.get("/test", (req: Request, res: Response, next: NextFunction) => {
+app.get("/test", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
     success: true,
     messege: "API is Working",
   });
-}); */
+});
 
 // Unknown route
 
