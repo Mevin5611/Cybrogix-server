@@ -20,16 +20,12 @@ app.use(express.json({ limit: "50mb" }));
 
 app.use(cookieParser());
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-})
+
 
 //cors
 app.use(
   cors({
-    origin:['https://cybrogix-client.vercel.app/'],
+    origin:['https://cybrogix-client.vercel.app'],
     credentials:true,
   })
 );
