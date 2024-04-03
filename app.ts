@@ -23,7 +23,10 @@ app.use(cookieParser());
 
 //cors
 app.use(
-  cors()
+  cors({
+    origin:["https://cybrogix-client.vercel.app"],
+    credentials:true,
+  })
 );
 
 // api limiter
