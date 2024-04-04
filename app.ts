@@ -18,7 +18,7 @@ import { rateLimit } from 'express-rate-limit'
 app.use(express.json({ limit: "50mb" }));
 
 // cookie parser
-app.set("trust proxy", 1);
+
 app.use(cookieParser());
 
 //cors

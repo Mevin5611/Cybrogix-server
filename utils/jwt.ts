@@ -27,7 +27,7 @@ interface ITokenOptions {
 export const accessTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + accessTokenExpires *60*60*1000),
   maxAge: accessTokenExpires *60*60*1000,
-  httpOnly: true,
+  httpOnly: false,
   sameSite: "none",
   secure:true
   
@@ -36,7 +36,7 @@ export const accessTokenOptions: ITokenOptions = {
 export const refreshTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + refreshTokenExpires* 24 * 60 * 60 * 1000),
   maxAge: refreshTokenExpires * 24 * 60 * 60 * 1000,
-  httpOnly: true,
+  httpOnly: false,
   sameSite: "none",
   secure:true
   

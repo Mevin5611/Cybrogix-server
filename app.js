@@ -20,7 +20,6 @@ const express_rate_limit_1 = require("express-rate-limit");
 //body parser
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 // cookie parser
-exports.app.set("trust proxy", 1);
 exports.app.use((0, cookie_parser_1.default)());
 //cors
 exports.app.use((0, cors_1.default)({
