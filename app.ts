@@ -18,13 +18,13 @@ import { rateLimit } from 'express-rate-limit'
 app.use(express.json({ limit: "50mb" }));
 
 // cookie parser
-
+app.set("trust proxy", 1);
 app.use(cookieParser());
 
 //cors
 app.use(
   cors({
-    origin:["https://cybrogix-client.vercel.app"],
+    origin:["https://cybrogix-server.onrender.com"],
     credentials:true,
   })
 );
