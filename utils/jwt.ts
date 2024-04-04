@@ -29,7 +29,7 @@ export const accessTokenOptions: ITokenOptions = {
   maxAge: accessTokenExpires *60*60*1000,
   httpOnly: true,
   sameSite: "none",
-  secure:true
+  secure:false
   
 };
 
@@ -38,7 +38,7 @@ export const refreshTokenOptions: ITokenOptions = {
   maxAge: refreshTokenExpires * 24 * 60 * 60 * 1000,
   httpOnly: true,
   sameSite: "none",
-  secure:true
+  secure:false
   
 };
 

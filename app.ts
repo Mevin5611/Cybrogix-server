@@ -24,7 +24,7 @@ app.use(cookieParser());
 //cors
 app.use(
   cors({
-    origin:["https://cybrogix-server.onrender.com"],
+    origin:["https://cybrogix-client.vercel.app"],
     credentials:true,
   })
 );
