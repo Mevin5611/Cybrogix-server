@@ -24,7 +24,7 @@ app.use(cookieParser());
 //cors
 app.use(
   cors({
-    origin:["https://cybrogix-client.vercel.app","https://www.astheticfitness.in"],
+    origin:["https://cybrogix-client.vercel.app"],
     credentials:true,
   })
 );
