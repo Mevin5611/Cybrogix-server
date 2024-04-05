@@ -15,7 +15,7 @@ orderRouter.get(
   authorizeRoles("admin"),
   getAllOrders
 );
-orderRouter.get("/payment/stripepublishablekey",isAuthenticated,sendStripePublishibleKey);
+orderRouter.get("/payment/stripepublishablekey",sendStripePublishibleKey);
 orderRouter.post("/payment", isAuthenticated, newPayment);
 
 export default orderRouter;

@@ -24,7 +24,7 @@ app.use(cookieParser());
 //cors
 app.use(
   cors({
-    origin:["https://cybrogix-client.vercel.app"],
+    origin:["http://localhost:3000"],
     credentials:true,
   })
 );
