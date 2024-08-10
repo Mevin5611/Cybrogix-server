@@ -23,7 +23,7 @@ exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use((0, cookie_parser_1.default)());
 //cors
 exports.app.use((0, cors_1.default)({
-    origin: ["https://cybrogix-client.vercel.app/"],
+    origin: ["https://cybrogix-client.vercel.app"],
     credentials: true,
 }));
 // api limiter
